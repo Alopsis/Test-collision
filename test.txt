@@ -1,0 +1,177 @@
+package Colision;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Arrays;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
+public class Jeu extends JPanel implements KeyListener {
+    Personnage perso;
+    boolean[] keys; 
+    ArrayList<Personnage> listPersonnage = new ArrayList<>();
+    static final int GAUCHE = 1;
+    static final int DROITE = 2;
+    static final int BAS = 3;
+    static final int HAUT = 4;
+    Jeu() {
+        this.setBackground(Color.BLACK);
+        perso = new Personnage(250, 250);
+        listPersonnage.add(new Personnage(300,300));
+        keys = new boolean[256];
+
+        Timer envoi = new Timer(25, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (keys[KeyEvent.VK_Z]) {
+                    verificationDeplacement(HAUT,perso);
+                }
+                if (keys[KeyEvent.VK_D]){
+                    verificationDeplacement(DROITE,perso);
+                }
+                if (keys[KeyEvent.VK_S]){
+                    verificationDeplacement(BAS,perso);
+                    
+                }
+                if (keys[KeyEvent.VK_Q]){
+                    verificationDeplacement(GAUCHE,perso);
+                    
+                }
+                repaint();
+            }
+        });
+        envoi.start();
+
+        setFocusable(true); 
+        addKeyListener(this);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.RED);
+        g.drawRect(perso.x, perso.y, 10, 10);
+        g.setColor(Color.BLUE);
+        for (int i = 0 ; i < listPersonnage.size(); i++) {
+            g.drawRect(listPersonnage.get(i).x, listPersonnage.get(i).y, 10, 10);
+            
+        }
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+        keys[e.getKeyCode()] = true;
+
+    }
+
+    public void keyReleased(KeyEvent e) {
+        keys[e.getKeyCode()] = false;
+    }
+
+    public Rectangle chercherRectangle(Personnage actuel,int choix){
+        Rectangle recFocus = new Rectangle(actuel.x, actuel.y, 10, 10);
+        if (choix == GAUCHE) {
+            if (!(recFocus.contains(perso.x - 1, perso.y)) && !(recFocus.contains(perso.x + 10 - 1, perso.y + 10)) && !(recFocus.contains(perso.x + 10 - 1 , perso.y)) && !(recFocus.contains(perso.x -1 , perso.y + 10))) {
+                perso.gauche();
+            }
+        } else if (choix == DROITE) {
+            if (!(recFocus.contains(perso.x + 1, perso.y)) && !(recFocus.contains(perso.x + 10 + 1, perso.y + 10)) && !(recFocus.contains(perso.x+1 , perso.y + 10)) && !(recFocus.contains(perso.x + 10 + 1 ,perso.y ))) {
+                perso.droite();
+            }
+        } else if (choix == BAS) {
+            if (!(recFocus.contains(perso.x, perso.y + 1)) && !(recFocus.contains(perso.x + 10, perso.y + 10 + 1)) && !(recFocus.contains(perso.x , perso.y+10+1)) && !(recFocus.contains(perso.x+10,perso.y+1))) {
+                perso.bas();
+            }
+        } else if (choix == HAUT) {
+            if (!(recFocus.contains(perso.x, perso.y - 1)) && !(recFocus.contains(perso.x + 10, perso.y + 10 - 1)) && !(recFocus.contains(perso.x,perso.y + 10 - 1 )) && !(recFocus.contains(perso.x + 10 , perso.y -1))) {
+                perso.haut();
+            }
+        }
+    }
+    public Rectangle chercherRectangle(int x,int y, int choix){
+        Rectangle target = null;
+
+        for(int i = 0 ; i < listPersonnage.size();i++){
+            if(choix == GAUCHE){
+                target = new Rectangle(x-10,y,10,10);
+            }else if (choix == DROITE){
+                target = new Rectangle(x+10,y,10,10);
+    
+            }else if (choix == HAUT){
+                target = new Rectangle(x,y-10,10,10);
+    
+            }else if (choix == BAS){
+                target = new Rectangle(x,y+10,10,10);
+                
+            }
+        }
+        
+        if(target != null){
+            if (choix == GAUCHE) {
+                if (!(target.contains(x - 1, y)) && !(target.contains(x + 10 - 1, y + 10)) && !(target.contains(x + 10 - 1 , y)) && !(target.contains(x -1 , y + 10))) {
+                    perso.gauche();
+                }
+            } else if (choix == DROITE) {
+                if (!(target.contains(x + 1, y)) && !(target.contains(x + 10 + 1, y + 10)) && !(target.contains(x+1 , y + 10)) && !(target.contains(x + 10 + 1 ,y ))) {
+                    perso.droite();
+                }
+            } else if (choix == BAS) {
+                if (!(target.contains(x, y + 1)) && !(target.contains(x + 10, y + 10 + 1)) && !(target.contains(x , y+10+1)) && !(target.contains(x+10,y+1))) {
+                    perso.bas();
+                }
+            } else if (choix == HAUT) {
+                if (!(target.contains(x, y - 1)) && !(target.contains(x + 10, y + 10 - 1)) && !(target.contains(x,y + 10 - 1 )) && !(target.contains(x + 10 , y -1))) {
+                    return new Rectangle()
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void verificationDeplacement(int choix,Personnage actuel) {
+        Rectangle recFocus = new Rectangle(actuel.x, actuel.y, 10, 10);
+        Rectangle recTrouve = chercherRectangle(actuel.x, actuel.y,choix);
+
+        if(recTrouve != null){
+            if (choix == GAUCHE) {
+                    perso.gauche();
+            } else if (choix == DROITE) {
+                    perso.droite();
+            } else if (choix == BAS) {
+                    perso.bas();
+            } else if (choix == HAUT) {
+                    perso.haut();
+            }
+        }else{
+    
+            if (choix == GAUCHE) {
+                if (!(recTrouve.contains(perso.x - 1, perso.y)) && !(recTrouve.contains(perso.x + 10 - 1, perso.y + 10)) && !(recTrouve.contains(perso.x + 10 - 1 , perso.y)) && !(recTrouve.contains(perso.x -1 , perso.y + 10))) {
+                    perso.gauche();
+                }
+            } else if (choix == DROITE) {
+                if (!(recTrouve.contains(perso.x + 1, perso.y)) && !(recTrouve.contains(perso.x + 10 + 1, perso.y + 10)) && !(recTrouve.contains(perso.x+1 , perso.y + 10)) && !(recTrouve.contains(perso.x + 10 + 1 ,perso.y ))) {
+                    perso.droite();
+                }
+            } else if (choix == BAS) {
+                if (!(recTrouve.contains(perso.x, perso.y + 1)) && !(recTrouve.contains(perso.x + 10, perso.y + 10 + 1)) && !(recTrouve.contains(perso.x , perso.y+10+1)) && !(recTrouve.contains(perso.x+10,perso.y+1))) {
+                    perso.bas();
+                }
+            } else if (choix == HAUT) {
+                if (!(recTrouve.contains(perso.x, perso.y - 1)) && !(recTrouve.contains(perso.x + 10, perso.y + 10 - 1)) && !(recTrouve.contains(perso.x,perso.y + 10 - 1 )) && !(recTrouve.contains(perso.x + 10 , perso.y -1))) {
+                    perso.haut();
+                }
+            }
+        }
+
+    }
+    
+}

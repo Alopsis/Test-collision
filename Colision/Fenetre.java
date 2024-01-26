@@ -6,7 +6,7 @@ public class Fenetre extends JFrame{
 
     public Fenetre(){
         this.setTitle("Client");
-        this.setSize(1800, 1000);
+        this.setSize(500, 500);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
