@@ -106,8 +106,16 @@ public class Jeu extends JPanel implements KeyListener {
         Rectangle rect1 = new Rectangle(perso.x, perso.y, 10, 10);
     
         for (Personnage proxi : listPersonnage) {
-            Rectangle rect2 = new Rectangle(proxi.x, proxi.y, 10, 10);
-    
+            Rectangle rect2 = new Rectangle();
+            if (choix == GAUCHE) {
+                rect2 = new Rectangle(proxi.x+1, proxi.y, 10, 10);
+            } else if (choix == DROITE) {
+                rect2 = new Rectangle(proxi.x-1, proxi.y, 10, 10);
+            } else if (choix == BAS) {
+                rect2 = new Rectangle(proxi.x, proxi.y-1, 10, 10);
+            } else if (choix == HAUT) {
+                rect2 = new Rectangle(proxi.x, proxi.y+1, 10, 10);
+            }
             if (rect2.intersects(rect1)) {
                 return;
             }
