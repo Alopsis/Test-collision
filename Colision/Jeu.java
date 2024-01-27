@@ -91,6 +91,8 @@ public class Jeu extends JPanel implements KeyListener {
                 System.out.println("On mange");
                 perso.addPoints(listPiece.get(i).valeur);
                 listPiece.remove(i);
+                listPiece.add(new Piece());
+
             }
         }
     }
