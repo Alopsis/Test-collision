@@ -8,11 +8,13 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 
+
 public class Jeu extends JPanel implements KeyListener {
     Personnage perso;
     boolean[] keys; 
-    ArrayList<Personnage> listPersonnage = new ArrayList<>();
-
+    ArrayList<Obstacle> listObstacle = new ArrayList<>(); // Objet immobiles
+    ArrayList<Vaisseau> listVaisseau = new ArrayList<>(); // Objet qui bouge
+    ArrayList<Piece> listPiece = new ArrayList<>(); // Piece;
     static final int GAUCHE = 1;
     static final int DROITE = 2;
     static final int BAS = 3;
@@ -20,8 +22,11 @@ public class Jeu extends JPanel implements KeyListener {
     Jeu() {
         this.setBackground(Color.BLACK);
         perso = new Personnage(250, 250);
-        listPersonnage.add(new Personnage(300,300));
-        listPersonnage.add(new Personnage(200,200));
+        listObstacle.add(new Obstacle(300,300,50,20));
+        listObstacle.add(new Obstacle(200,200,20,50));
+        listPiece.add(new Piece());
+        listPiece.add(new Piece());
+        listPiece.add(new Piece());
         keys = new boolean[256];
 
         Timer envoi = new Timer(25, new ActionListener() {
@@ -35,12 +40,12 @@ public class Jeu extends JPanel implements KeyListener {
                 }
                 if (keys[KeyEvent.VK_S]){
                     verificationDeplacement(BAS);
-                    
                 }
                 if (keys[KeyEvent.VK_Q]){
                     verificationDeplacement(GAUCHE);
                     
                 }
+                verificationPiece();
                 repaint();
             }
         });
@@ -56,9 +61,12 @@ public class Jeu extends JPanel implements KeyListener {
         g.setColor(Color.RED);
         g.drawRect(perso.x, perso.y, 10, 10);
         g.setColor(Color.BLUE);
-        for(int i = 0 ; i < listPersonnage.size();i++){
-            g.drawRect(listPersonnage.get(i).x, listPersonnage.get(i).y, 10, 10);
-
+        for(int i = 0 ; i < listObstacle.size();i++){
+            g.drawRect(listObstacle.get(i).x, listObstacle.get(i).y, listObstacle.get(i).largeur, listObstacle.get(i).longueur);
+        }
+        g.setColor(Color.yellow);
+        for(int i = 0 ; i < listPiece.size() ; i++){
+            g.drawOval(listPiece.get(i).x,listPiece.get(i).y,20,20);
         }
     }
 
@@ -74,47 +82,32 @@ public class Jeu extends JPanel implements KeyListener {
         keys[e.getKeyCode()] = false;
     }
     
-    public ArrayList<Personnage> rectangleAProximite(int choix){
-        ArrayList<Personnage> listProxi = new ArrayList<>();
-
-        for(int i = 0 ; i < listPersonnage.size();i++){
-            Rectangle courant = new Rectangle(listPersonnage.get(i).x,listPersonnage.get(i).y,10,10);
-            if (choix == GAUCHE) {
-                if ((courant.contains(perso.x - 1, perso.y)) && (courant.contains(perso.x + 10 - 1, perso.y + 10)) && (courant.contains(perso.x + 10 - 1 , perso.y)) && (courant.contains(perso.x -1 , perso.y + 10))) {
-                    listProxi.add(listPersonnage.get(i));
-                }
-            } else if (choix == DROITE) {
-                if ((courant.contains(perso.x + 1, perso.y)) && (courant.contains(perso.x + 10 + 1, perso.y + 10)) && (courant.contains(perso.x+1 , perso.y + 10)) && (courant.contains(perso.x + 10 + 1 ,perso.y ))) {
-                    listProxi.add(listPersonnage.get(i));
-                }
-            } else if (choix == BAS) {
-                if ((courant.contains(perso.x, perso.y + 1)) && (courant.contains(perso.x + 10, perso.y + 10 + 1)) && (courant.contains(perso.x , perso.y+10+1)) && (courant.contains(perso.x+10,perso.y+1))) {
-                    listProxi.add(listPersonnage.get(i));
-                }
-            } else if (choix == HAUT) {
-                if ((courant.contains(perso.x, perso.y - 1)) && (courant.contains(perso.x + 10, perso.y + 10 - 1)) && (courant.contains(perso.x,perso.y + 10 - 1 )) && (courant.contains(perso.x + 10 , perso.y -1))) {
-                    listProxi.add(listPersonnage.get(i));
-                }
+    public void verificationPiece() {
+        Rectangle rectJoueur = new Rectangle(perso.x, perso.y, 10, 10);
+    
+        for (int i = 0 ; i < listPiece.size() ; i++) {
+            Rectangle rectPiece = new Rectangle(listPiece.get(i).x, listPiece.get(i).y, 20,20);
+            if (rectPiece.intersects(rectJoueur)) {
+                System.out.println("On mange");
+                perso.addPoints(listPiece.get(i).valeur);
+                listPiece.remove(i);
             }
         }
-
-
-
-        return listProxi;
     }
+    
     public void verificationDeplacement(int choix) {
         Rectangle rect1 = new Rectangle(perso.x, perso.y, 10, 10);
     
-        for (Personnage proxi : listPersonnage) {
+        for (Obstacle proxi : listObstacle) {
             Rectangle rect2 = new Rectangle();
             if (choix == GAUCHE) {
-                rect2 = new Rectangle(proxi.x+1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x+1, proxi.y, proxi.largeur, proxi.longueur);
             } else if (choix == DROITE) {
-                rect2 = new Rectangle(proxi.x-1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x-1, proxi.y, proxi.largeur, proxi.longueur);
             } else if (choix == BAS) {
-                rect2 = new Rectangle(proxi.x, proxi.y-1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y-1, proxi.largeur, proxi.longueur);
             } else if (choix == HAUT) {
-                rect2 = new Rectangle(proxi.x, proxi.y+1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y+1, proxi.largeur, proxi.longueur);
             }
             if (rect2.intersects(rect1)) {
                 return;

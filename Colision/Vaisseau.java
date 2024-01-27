@@ -1,13 +1,16 @@
 package Colision;
 
-public class Personnage {
+public class Vaisseau {
     int x;
     int y;
-    int nombrePoints = 0;
+    int largeur;
+    int longueur;
 
-    Personnage(int x,int y){
+    Vaisseau(int x,int y,int largeur,int longueur){
         this.x = x;
         this.y = y;
+        this.largeur = largeur;
+        this.longueur = longueur;
     }
     public void gauche(){
 
@@ -21,8 +24,5 @@ public class Personnage {
     }
     public void bas(){
         y = y+1;
-    }
-    public void addPoints(int pts){
-        this.nombrePoints += pts;
     }
 }

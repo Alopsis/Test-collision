@@ -1,13 +1,19 @@
 package Colision;
 
-public class Personnage {
+public class Piece {
     int x;
     int y;
-    int nombrePoints = 0;
-
-    Personnage(int x,int y){
+    int valeur;
+    Piece(int x,int y,int valeur){
         this.x = x;
         this.y = y;
+        this.valeur = valeur;
+    }
+    Piece(){
+        this.x = (int)(Math.random() * 500);
+        this.y = (int)(Math.random() * 500);
+        this.valeur = (int)(Math.random() * 20);
+
     }
     public void gauche(){
 
@@ -21,8 +27,5 @@ public class Personnage {
     }
     public void bas(){
         y = y+1;
-    }
-    public void addPoints(int pts){
-        this.nombrePoints += pts;
     }
 }
