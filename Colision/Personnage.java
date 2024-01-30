@@ -4,7 +4,7 @@ public class Personnage {
     int x;
     int y;
     int nombrePoints = 0;
-
+    boolean canBeTp = true;
     Personnage(int x,int y){
         this.x = x;
         this.y = y;
