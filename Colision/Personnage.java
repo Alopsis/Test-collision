@@ -11,16 +11,16 @@ public class Personnage {
     }
     public void gauche(){
 
-        x = x-1;
+        x = x-Iconfig.VALEUR_DEPLACEMENT;
     }
     public void droite(){
-        x = x+1;
+        x = x+Iconfig.VALEUR_DEPLACEMENT;
     }    
     public void haut(){
-        y = y-1;
+        y = y-Iconfig.VALEUR_DEPLACEMENT;
     }
     public void bas(){
-        y = y+1;
+        y = y+Iconfig.VALEUR_DEPLACEMENT;
     }
     public void addPoints(int pts){
         this.nombrePoints += pts;

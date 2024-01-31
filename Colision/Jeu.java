@@ -37,21 +37,21 @@ public class Jeu extends JPanel implements KeyListener {
         listTp.add(new Teleporteur(250, 250, 750, 750));
         keys = new boolean[256];
 
-        Timer envoi = new Timer(25, new ActionListener() {
+        Timer envoi = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // DEPLACEMENT PERSO 1
                 // if (keys[KeyEvent.VK_Z]) {
-                //     verificationDeplacement(listPersonnage.get(1), HAUT);
+                //     verificationDeplacement(listPersonnage.get(0), HAUT);
                 // }
                 // if (keys[KeyEvent.VK_D]) {
-                //     verificationDeplacement(listPersonnage.get(1), DROITE);
+                //     verificationDeplacement(listPersonnage.get(0), DROITE);
                 // }
                 // if (keys[KeyEvent.VK_S]) {
-                //     verificationDeplacement(listPersonnage.get(1), BAS);
+                //     verificationDeplacement(listPersonnage.get(0), BAS);
                 // }
                 // if (keys[KeyEvent.VK_Q]) {
-                //     verificationDeplacement(listPersonnage.get(1), GAUCHE);
+                //     verificationDeplacement(listPersonnage.get(0), GAUCHE);
 
                 // }
                 // DEPLACEMENT PERSO 2
@@ -126,7 +126,6 @@ public class Jeu extends JPanel implements KeyListener {
             Rectangle rectPiece = new Rectangle(listPiece.get(i).x, listPiece.get(i).y, Iconfig.PIECE_SIZE,
                     Iconfig.PIECE_SIZE);
             if (rectPiece.intersects(rectJoueur)) {
-                System.out.println("On mange");
                 perso.addPoints(listPiece.get(i).valeur);
                 listPiece.remove(i);
                 listPiece.add(new Piece());
@@ -160,17 +159,16 @@ public class Jeu extends JPanel implements KeyListener {
 
     public void verificationDeplacement(Personnage perso, int choix) {
         Rectangle rect1 = new Rectangle(perso.x, perso.y, 10, 10);
-        System.out.println("ici");
         for (Obstacle proxi : listObstacle) {
             Rectangle rect2 = new Rectangle();
             if (choix == GAUCHE) {
-                rect2 = new Rectangle(proxi.x + 1, proxi.y, proxi.largeur, proxi.longueur);
+                rect2 = new Rectangle(proxi.x + Iconfig.VALEUR_DEPLACEMENT, proxi.y, proxi.largeur, proxi.longueur);
             } else if (choix == DROITE) {
-                rect2 = new Rectangle(proxi.x - 1, proxi.y, proxi.largeur, proxi.longueur);
+                rect2 = new Rectangle(proxi.x - Iconfig.VALEUR_DEPLACEMENT, proxi.y, proxi.largeur, proxi.longueur);
             } else if (choix == BAS) {
-                rect2 = new Rectangle(proxi.x, proxi.y - 1, proxi.largeur, proxi.longueur);
+                rect2 = new Rectangle(proxi.x, proxi.y - Iconfig.VALEUR_DEPLACEMENT, proxi.largeur, proxi.longueur);
             } else if (choix == HAUT) {
-                rect2 = new Rectangle(proxi.x, proxi.y + 1, proxi.largeur, proxi.longueur);
+                rect2 = new Rectangle(proxi.x, proxi.y + Iconfig.VALEUR_DEPLACEMENT, proxi.largeur, proxi.longueur);
             }
             if (rect2.intersects(rect1)) {
                 return;
@@ -182,13 +180,13 @@ public class Jeu extends JPanel implements KeyListener {
             
             Rectangle rect2 = new Rectangle();
             if (choix == GAUCHE) {
-                rect2 = new Rectangle(proxi.x + 1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x + Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
             } else if (choix == DROITE) {
-                rect2 = new Rectangle(proxi.x - 1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x - Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
             } else if (choix == BAS) {
-                rect2 = new Rectangle(proxi.x, proxi.y - 1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y - Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             } else if (choix == HAUT) {
-                rect2 = new Rectangle(proxi.x, proxi.y + 1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y + Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             }
             if (rect2.intersects(rect1)) {
                 if (deplacementPossible(proxi, choix)) {
@@ -198,17 +196,16 @@ public class Jeu extends JPanel implements KeyListener {
             }
         }
         }
-        System.out.println(listTp.size());
         for (Teleporteur proxi : listTp) {
             Rectangle rect2 = new Rectangle();
             if (choix == GAUCHE) {
-                rect2 = new Rectangle(proxi.x1 + 1, proxi.y1, 10, 10);
+                rect2 = new Rectangle(proxi.x1 + Iconfig.VALEUR_DEPLACEMENT, proxi.y1, 10, 10);
             } else if (choix == DROITE) {
-                rect2 = new Rectangle(proxi.x1 - 1, proxi.y1, 10, 10);
+                rect2 = new Rectangle(proxi.x1 - Iconfig.VALEUR_DEPLACEMENT, proxi.y1, 10, 10);
             } else if (choix == BAS) {
-                rect2 = new Rectangle(proxi.x1, proxi.y1 - 1, 10, 10);
+                rect2 = new Rectangle(proxi.x1, proxi.y1 - Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             } else if (choix == HAUT) {
-                rect2 = new Rectangle(proxi.x1, proxi.y1 + 1, 10, 10);
+                rect2 = new Rectangle(proxi.x1, proxi.y1 + Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             }
             if (rect2.intersects(rect1)) {
                 if(perso.canBeTp == true){
@@ -229,13 +226,13 @@ public class Jeu extends JPanel implements KeyListener {
 
             }
             if (choix == GAUCHE) {
-                rect2 = new Rectangle(proxi.x2 + 1, proxi.y2, 10, 10);
+                rect2 = new Rectangle(proxi.x2 + Iconfig.VALEUR_DEPLACEMENT, proxi.y2, 10, 10);
             } else if (choix == DROITE) {
-                rect2 = new Rectangle(proxi.x2 - 1, proxi.y2, 10, 10);
+                rect2 = new Rectangle(proxi.x2 - Iconfig.VALEUR_DEPLACEMENT, proxi.y2, 10, 10);
             } else if (choix == BAS) {
-                rect2 = new Rectangle(proxi.x2, proxi.y2 - 1, 10, 10);
+                rect2 = new Rectangle(proxi.x2, proxi.y2 - Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             } else if (choix == HAUT) {
-                rect2 = new Rectangle(proxi.x2, proxi.y2 + 1, 10, 10);
+                rect2 = new Rectangle(proxi.x2, proxi.y2 + Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             }
             if (rect2.intersects(rect1)) {
                 if(perso.canBeTp == true){
@@ -278,13 +275,13 @@ public class Jeu extends JPanel implements KeyListener {
             if(proxi.equals(personnage) == false){
                 Rectangle rect2 = new Rectangle();
                 if (direction == GAUCHE) {
-                    rect2 = new Rectangle(proxi.x + 1, proxi.y, 10, 10);
+                    rect2 = new Rectangle(proxi.x + Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
                 } else if (direction == DROITE) {
-                    rect2 = new Rectangle(proxi.x - 1, proxi.y, 10, 10);
+                    rect2 = new Rectangle(proxi.x - Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
                 } else if (direction == BAS) {
-                    rect2 = new Rectangle(proxi.x, proxi.y - 1, 10, 10);
+                    rect2 = new Rectangle(proxi.x, proxi.y - Iconfig.VALEUR_DEPLACEMENT, 10, 10);
                 } else if (direction == HAUT) {
-                    rect2 = new Rectangle(proxi.x, proxi.y + 1, 10, 10);
+                    rect2 = new Rectangle(proxi.x, proxi.y + Iconfig.VALEUR_DEPLACEMENT, 10, 10);
                 }
                 if (rect2.intersects(rectJoueur)) {
                     if (deplacementPossible(proxi, direction)) {
@@ -309,13 +306,13 @@ public class Jeu extends JPanel implements KeyListener {
             
             Rectangle rect2 = new Rectangle();
             if (direction == GAUCHE) {
-                rect2 = new Rectangle(proxi.x + 1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x + Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
             } else if (direction == DROITE) {
-                rect2 = new Rectangle(proxi.x - 1, proxi.y, 10, 10);
+                rect2 = new Rectangle(proxi.x - Iconfig.VALEUR_DEPLACEMENT, proxi.y, 10, 10);
             } else if (direction == BAS) {
-                rect2 = new Rectangle(proxi.x, proxi.y - 1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y - Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             } else if (direction == HAUT) {
-                rect2 = new Rectangle(proxi.x, proxi.y + 1, 10, 10);
+                rect2 = new Rectangle(proxi.x, proxi.y + Iconfig.VALEUR_DEPLACEMENT, 10, 10);
             }
             if (rect2.intersects(rectJoueur)) {
                 return false;
