@@ -4,11 +4,12 @@ public class Bot {
     int x;
     int y;
     int accumulateurPourDeplacement;
-
-    Bot(int x,int y){
+    int valeurDeRenversement;
+    Bot(int x,int y,int valeurDeRenversement){
 
         this.x = x;
         this.y = y;
+        this.valeurDeRenversement = valeurDeRenversement;
       
 
     }

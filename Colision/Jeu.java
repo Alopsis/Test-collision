@@ -27,7 +27,7 @@ public class Jeu extends JPanel implements KeyListener {
         this.setBackground(Color.BLACK);
         listObstacle.add(new Obstacle(300, 300, 50, 20));
         listObstacle.add(new Obstacle(200, 200, 20, 50));
-        listBot.add(new Bot(600, 600));
+        listBot.add(new Bot(600, 600,100));
         listPiece.add(new Piece());
         listPiece.add(new Piece());
         listPiece.add(new Piece());
@@ -37,24 +37,22 @@ public class Jeu extends JPanel implements KeyListener {
         listTp.add(new Teleporteur(250, 250, 750, 750));
         keys = new boolean[256];
 
-        Timer envoi = new Timer(100, new ActionListener() {
+        Timer envoi = new Timer(25, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // DEPLACEMENT PERSO 1
-                // if (keys[KeyEvent.VK_Z]) {
-                //     verificationDeplacement(listPersonnage.get(0), HAUT);
-                // }
-                // if (keys[KeyEvent.VK_D]) {
-                //     verificationDeplacement(listPersonnage.get(0), DROITE);
-                // }
-                // if (keys[KeyEvent.VK_S]) {
-                //     verificationDeplacement(listPersonnage.get(0), BAS);
-                // }
-                // if (keys[KeyEvent.VK_Q]) {
-                //     verificationDeplacement(listPersonnage.get(0), GAUCHE);
+                if (keys[KeyEvent.VK_Z]) {
+                    verificationDeplacement(listPersonnage.get(1), HAUT);
+                }
+                if (keys[KeyEvent.VK_D]) {
+                    verificationDeplacement(listPersonnage.get(1), DROITE);
+                }
+                if (keys[KeyEvent.VK_S]) {
+                    verificationDeplacement(listPersonnage.get(1), BAS);
+                }
+                if (keys[KeyEvent.VK_Q]) {
+                    verificationDeplacement(listPersonnage.get(1), GAUCHE);
 
-                // }
-                // DEPLACEMENT PERSO 2
+                }
                 if (keys[KeyEvent.VK_O]) {
                     verificationDeplacement(listPersonnage.get(0), HAUT);
 
@@ -145,7 +143,7 @@ public class Jeu extends JPanel implements KeyListener {
                     if (rectBot.intersects(rectJoueur)) {
                         listPersonnage.remove(listPersonnage.get(j));
                     }
-                    if (listBot.get(i).accumulateurPourDeplacement % 100 < 50) {
+                    if (listBot.get(i).accumulateurPourDeplacement % listBot.get(i).valeurDeRenversement < listBot.get(i).valeurDeRenversement/2) {
                         listBot.get(i).gauche();
                     }else{
                         listBot.get(i).droite();
