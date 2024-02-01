@@ -95,6 +95,7 @@ public class Jeu extends JPanel implements KeyListener {
         }
         g.setColor(Color.green);
         for (int i = 0; i < listPersonnage.size(); i++) {
+            g.drawString(i+"", listPersonnage.get(i).x+2, listPersonnage.get(i).y-5);
             g.drawRect(listPersonnage.get(i).x, listPersonnage.get(i).y, 10, 10);
         }
         g.setColor(Color.GRAY);
