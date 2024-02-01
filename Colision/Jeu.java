@@ -17,6 +17,7 @@ public class Jeu extends JPanel implements KeyListener {
     ArrayList<Personnage> listPersonnage = new ArrayList<>();
     ArrayList<Bot> listBot = new ArrayList<>();
     ArrayList<Teleporteur> listTp = new ArrayList<>();
+    ArrayList<Faucheur> listFaucheur = new ArrayList<>();
 
     static final int GAUCHE = 1;
     static final int DROITE = 2;
@@ -35,39 +36,41 @@ public class Jeu extends JPanel implements KeyListener {
         listPersonnage.add(new Personnage(100, 250));
         listTp.add(new Teleporteur(250, 750, 750, 250));
         listTp.add(new Teleporteur(250, 250, 750, 750));
+        listFaucheur.add(new Faucheur(0,0,1000,0,BAS,1));
         keys = new boolean[256];
 
         Timer envoi = new Timer(25, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (keys[KeyEvent.VK_Z]) {
-                    verificationDeplacement(listPersonnage.get(1), HAUT);
+                    verificationDeplacement(listPersonnage.get(0), HAUT);
                 }
                 if (keys[KeyEvent.VK_D]) {
-                    verificationDeplacement(listPersonnage.get(1), DROITE);
+                    verificationDeplacement(listPersonnage.get(0), DROITE);
                 }
                 if (keys[KeyEvent.VK_S]) {
-                    verificationDeplacement(listPersonnage.get(1), BAS);
+                    verificationDeplacement(listPersonnage.get(0), BAS);
                 }
                 if (keys[KeyEvent.VK_Q]) {
-                    verificationDeplacement(listPersonnage.get(1), GAUCHE);
-
-                }
-                if (keys[KeyEvent.VK_O]) {
-                    verificationDeplacement(listPersonnage.get(0), HAUT);
-
-                }
-                if (keys[KeyEvent.VK_M]) {
-                    verificationDeplacement(listPersonnage.get(0), DROITE);
-
-                }
-                if (keys[KeyEvent.VK_L]) {
-                    verificationDeplacement(listPersonnage.get(0), BAS);
-
-                }
-                if (keys[KeyEvent.VK_K]) {
                     verificationDeplacement(listPersonnage.get(0), GAUCHE);
+
                 }
+                // if (keys[KeyEvent.VK_O]) {
+                //     verificationDeplacement(listPersonnage.get(0), HAUT);
+
+                // }
+                // if (keys[KeyEvent.VK_M]) {
+                //     verificationDeplacement(listPersonnage.get(0), DROITE);
+
+                // }
+                // if (keys[KeyEvent.VK_L]) {
+                //     verificationDeplacement(listPersonnage.get(0), BAS);
+
+                // }
+                // if (keys[KeyEvent.VK_K]) {
+                //     verificationDeplacement(listPersonnage.get(0), GAUCHE);
+                // }
+                deplacementFaucheur();
                 deplacementBot();
                 repaint();
             }
@@ -103,6 +106,10 @@ public class Jeu extends JPanel implements KeyListener {
             g.drawRect(listTp.get(i).x1, listTp.get(i).y1, 10, 10);
             g.drawRect(listTp.get(i).x2, listTp.get(i).y2, 10, 10);
         }
+        g.setColor(Color.WHITE);
+        for(int i = 0 ; i < listFaucheur.size() ; i++){
+            g.drawRect(listFaucheur.get(i).x1, listFaucheur.get(i).y1, listFaucheur.get(i).x2, listFaucheur.get(i).y2);
+        }
     }
 
     public void keyTyped(KeyEvent e) {
@@ -131,7 +138,18 @@ public class Jeu extends JPanel implements KeyListener {
             }
         }
     }
-
+    public void deplacementFaucheur(){
+        for(int i = 0 ; i < listFaucheur.size() ; i ++){
+            Rectangle rectFauch = new Rectangle(listFaucheur.get(i).x1, listFaucheur.get(i).y1, listFaucheur.get(i).x2, listFaucheur.get(i).y2);
+            for(int j = 0 ; j < listPersonnage.size() ; j ++){
+                Rectangle rectJoueur = new Rectangle(listPersonnage.get(j).x, listPersonnage.get(j).y ,10,10);
+                if(rectFauch.intersects(rectJoueur)){
+                    listPersonnage.remove(listPersonnage.get(j));
+                }
+                listFaucheur.get(i).avancer();
+            }
+        }
+    }
     public void deplacementBot() {
         for (int i = 0; i < listBot.size(); i++) {
             // ICI VERIFIER LES OBSTACLES
